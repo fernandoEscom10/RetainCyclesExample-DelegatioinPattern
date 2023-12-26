@@ -7,7 +7,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController2: UIViewController {
+    
+    deinit {
+        print("deinit view controller 2")
+    }
     
     let apiClient = APICLient()
     
@@ -33,25 +37,12 @@ class ViewController: UIViewController {
         return button
     }()
 
-    
-    private lazy var presentViewController2Button: UIButton = {
-        var configuration = UIButton.Configuration.bordered()
-        configuration.title = "Presentar otro view"
-        
-        let button = UIButton(type: .system, primaryAction: UIAction(handler:{ [weak self] _ in
-            self?.didTapOnPresentViewController2Button()
-        }))
-        
-        button.configuration = configuration
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(searchButton)
         view.addSubview(titleLabel)
-        view.addSubview(presentViewController2Button)
+        view.backgroundColor = .orange
         
         apiClient.delegate = self
         
@@ -61,23 +52,17 @@ class ViewController: UIViewController {
             titleLabel.leadingAnchor.constraint(equalTo: view.trailingAnchor),
             searchButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             searchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            presentViewController2Button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            presentViewController2Button.centerYAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 32)
         ])
     }
     
     func didTapOnAcceptButton(){
         apiClient.getPokemon()
     }
-    
-    func didTapOnPresentViewController2Button(){
-        present(ViewController2(), animated: true)
-    }
 
 
 }
 
-extension ViewController: APICLientDelegate{
+extension ViewController2: APICLientDelegate{
     func update(pokemons: PokemonResponseDataModel) {
         DispatchQueue.main.async {
             self.titleLabel.text = pokemons.Pokemons.randomElement()?.name
