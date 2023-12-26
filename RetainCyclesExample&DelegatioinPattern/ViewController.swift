@@ -39,6 +39,8 @@ class ViewController: UIViewController {
         view.addSubview(searchButton)
         view.addSubview(titleLabel)
         
+        apiClient.delegate = self
+        
         NSLayoutConstraint.activate([
             titleLabel.bottomAnchor.constraint(equalTo: searchButton.topAnchor, constant: -32),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -53,5 +55,15 @@ class ViewController: UIViewController {
     }
 
 
+}
+
+extension ViewController: APICLientDelegate{
+    func update(pokemons: PokemonResponseDataModel) {
+        DispatchQueue.main.async {
+            self.titleLabel.text = pokemons.Pokemons.randomElement()?.name
+        }
+    }
+    
+    
 }
 

@@ -25,7 +25,12 @@ struct PokemonResponseDataModel: Decodable {
     }
 }
 
+protocol APICLientDelegate {
+    func update( pokemons: PokemonResponseDataModel)
+}
+
 class APICLient {
+    var delegate : APICLientDelegate?
     func getPokemon(){
         
         let url = URL(string: "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151")!
@@ -33,6 +38,7 @@ class APICLient {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             let dataModel = try! JSONDecoder().decode(PokemonResponseDataModel.self, from: data!)
             print("DataModel \(dataModel)")
+            self.delegate?.update(pokemons: dataModel)
         }
         task.resume()
     }
