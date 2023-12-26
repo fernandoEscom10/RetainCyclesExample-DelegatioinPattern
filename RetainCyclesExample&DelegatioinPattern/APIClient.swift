@@ -25,12 +25,12 @@ struct PokemonResponseDataModel: Decodable {
     }
 }
 
-protocol APICLientDelegate {
+protocol APICLientDelegate: AnyObject {
     func update( pokemons: PokemonResponseDataModel)
 }
 
 class APICLient {
-    var delegate : APICLientDelegate?
+    weak var delegate : APICLientDelegate?
     func getPokemon(){
         
         let url = URL(string: "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151")!
